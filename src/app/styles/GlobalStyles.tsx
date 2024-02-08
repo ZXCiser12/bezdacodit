@@ -1,29 +1,43 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
+export const lightTheme = {
+  headerBackground: "#000000",
 
+  buttonBackground: "#000000",
 
-export const GlobalStyles = createGlobalStyle`
-  #__next {
-   position: relative;
+  backgroundColor: "#000000", 
+
+  textColor: "#050505",
+};
+
+export const darkTheme = {
+  headerBackground: "#000000",
+
+  
+  background: "#32223D",
+  textColor: "#ffffff",
+};
+
+export const GlobalStyle = createGlobalStyle`
+html, body {
+padding: 0;
+margin: 0;
+
+font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+      Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+      
+
+${(themeProps) => {
+  switch (themeProps.theme) {
+    case lightTheme:
+      return lightTheme;
+    default:
+      return darkTheme;
   }
+}};
 
-  html {
-    scroll-behavior: smooth;
+#root{
+height: 100%;
 
-    color: #000;
-    font-family: Manrope, sans-serif;
-    font-size: 16px;
-  }
-
-  body {
-    width: 100%;
-    margin: 0;
-
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-  }
+}}
 `;

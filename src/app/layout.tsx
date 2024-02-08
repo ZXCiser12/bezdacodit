@@ -1,47 +1,31 @@
 "use client";
-import { Inter } from "next/font/google";
-import { GlobalStyles } from "./styles/GlobalStyles";
+
+import { useState } from "react";
+import { GlobalStyle, darkTheme, lightTheme } from "./styles/GlobalStyles";
+import { ThemeContext } from "./context/themeContext";
 import { ThemeProvider } from "styled-components";
-import { createContext, useState } from "react";
-
-const inter = Inter({ subsets: ["latin"] });
-
-
-interface ThemeContextInterface  {
-  isTheme?: {[key:string]:string};
-  toggleTheme?: () => void;
-}
-
-const themeName = {
-  light: {
-    backgroundColor: "#e61010",
-  },
-  dark: {
-    backgroundColor: "#3418d6",
-  },
-};
-
-export const ThemeContext = createContext<ThemeContextInterface >({});
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [isTheme, setIsTheme] = useState<{}>(themeName.light);
+  const initialTheme = typeof window !== 'undefined' ? window.localStorage.getItem('themeName') || 'light' : 'light';
+  const [themeMode, setThemeMode] = useState(initialTheme);
+  const theme = themeMode === 'light' ? darkTheme : lightTheme;
 
-  const toggleTheme = () => {
-    isTheme === themeName.light
-      ? setIsTheme(themeName.dark)
-      : setIsTheme(themeName.light);
-      console.log(isTheme);
+  const changeTheme = () => {
+    const newThemeName = themeMode === 'light' ? 'dark' : 'light';
+    setThemeMode(newThemeName);
+    localStorage.setItem('themeName', newThemeName);
   };
 
   return (
     <html>
-      <body className={inter.className}>
-        <ThemeContext.Provider value={{ isTheme, toggleTheme }}>
-          {children}
+      <body>
+        <ThemeContext.Provider value={{ themeMode, changeTheme }}>
+          <GlobalStyle theme={theme} />
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </ThemeContext.Provider>
       </body>
     </html>

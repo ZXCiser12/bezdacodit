@@ -1,4 +1,12 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
 
-module.exports = nextConfig
+
+
+const nextConfig = {
+    images: {
+      domains: ['prod-ripcut-delivery.disney-plus.net'],
+    },
+  };
+  
+  module.exports = nextConfig;
+    
